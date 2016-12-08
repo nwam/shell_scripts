@@ -1,0 +1,14 @@
+#/bin/sh
+
+# lets you put a mechanical keyboard on top of laptop keyboard to become an ultimate hacker 
+# TODO: make a configuration file to loop each device
+
+keyboard=`xinput --list | grep 'AT Translated Set 2 keyboard' | cut -d "=" -f 2 | awk '{print $1;}'`
+power=`xinput --list | grep 'Power Button' | cut -d "=" -f 2 | awk '{print $1;}'`
+sleep=`xinput --list | grep 'Sleep Button' | cut -d "=" -f 2 | awk '{print $1;}'`
+touchpad=`xinput --list | grep 'ETPS/2 Elantech Touchpad' | cut -d "=" -f 2 | awk '{print $1;}'`
+
+xinput set-int-prop $keyboard "Device Enabled" 8 0
+xinput set-int-prop $touchpad "Device Enabled" 8 0
+xinput set-int-prop $power "Device Enabled" 8 0
+xinput set-int-prop $sleep "Device Enabled" 8 0

@@ -1,0 +1,38 @@
+#!/bin/sh
+# this script tints with a red hue screens and applies a brightness 
+# used for night-time when brightness is too high
+# supplying no args resets the brightness to normal
+# dependency: tint_screens
+#
+# author: Noah Murad
+# date: Oct 19, 2016
+#
+
+screens=`xrandr | grep " connected " | awk '{print $1}'`
+a=$1
+
+function tint_screens {
+    for screen in $screens
+    do
+        xrandr --output $screen --gamma $r:$g:$b --brightness $a;
+    done
+}
+
+# defaults for 1 arg
+# tints screen red for flux/redshift/twilight-like effect
+if [ "$#" -eq 1 ]; then
+    r=1
+    g=0.8
+    b=0.4
+fi
+
+# defaults for no args
+# resets rgb and brightness to normal
+if [ "$#" -eq 0 ]; then
+    r=1
+    g=1
+    b=1
+    a=1
+fi
+
+tint_screens

@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+# loads up a random episode of a show stored on your computer
+# just set the show's directory to SBSP_DIR
+#
+# can supply args of whats seasons to choose from
+#   ex: sbsp 1 2 3 5 //plays random episode from season 1,2,3 or 5
+#
+# directory must be organized with each season being a directory of just the season number
+#   ex: season 6 is in a directory $SBSP/6/
+
+SBSP_DIR = "/home/noah/shared_media/Videos2/Movies and Shows/Spongebob/"
+
+#create an array with the requested seasons (the arguments) as it's contents
+seasons = []
+for i in 0..ARGV.length-1
+    seasons << ARGV[i] if ARGV[i].to_i < 10
+end
+
+#set all the seasons if no arguments are supplied
+if seasons.length == 0 then 
+    for i in 1..9
+        seasons << i.to_s
+    end
+end
+
+#choose a random season
+season  = seasons[rand(seasons.length)]
+
+#choose a random episode
+dir = Dir[SBSP_DIR + season + "/*"]
+episode = dir[rand(dir.length)]
+
+#play the episode
+`xdg-open "#{episode}" &`

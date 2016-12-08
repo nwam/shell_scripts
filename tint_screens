@@ -1,0 +1,59 @@
+#!/bin/sh
+# tint_screens
+# this script tints screens and applies a brightness 
+# for a specified period of time
+# its main purpose is to be used as a utility
+#
+# author: Noah Murad
+# date: Oct 19, 2016
+#
+# TODO: add blinking feature (ie: tint_screens -b 3:4 => blink 3 times with 4 second breaks)
+# TODO: add fade-in/fade-out options
+# TODO: better cli (ie: tint_screens -c 3:1:0 -t 10m => tint screen to rgb = 3:1:0 for 10 minutes) 
+
+screens=`xrandr | grep " connected " | awk '{print $1}'`
+r=$1
+g=$2
+b=$3
+a=$4
+t=$5
+
+function no_tint {
+    for screen in $screens
+    do
+        xrandr --output $screen --gamma 1:1:1 --brightness 1;
+    done
+}
+
+function tint_screens {
+    for screen in $screens
+    do
+        xrandr --output $screen --gamma $r:$g:$b --brightness $a;
+    done
+}
+
+function clean_up {
+    no_tint;
+    exit;
+}
+
+trap 'clean_up' INT
+
+# arg defaults
+if [ "$#" -lt 4 ]; then
+    a=1
+fi
+
+if [ "$#" -eq 0 ]; then
+    r=1
+    g=1
+    b=1
+fi
+
+tint_screens
+
+# kill the screen tint if time is specified
+if [ "$#" -gt 4 ]; then
+    sleep $t
+    no_tint
+fi

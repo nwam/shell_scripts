@@ -1,0 +1,3 @@
+# python calculator
+# one-liner alternative to bc
+echo "print($1)" | python

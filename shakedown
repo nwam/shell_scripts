@@ -1,0 +1,43 @@
+#/bin/sh
+
+# this script brings your monitor(s) into disco shakedown mode
+# without removing any functionality
+# the secondary purpose of this script is to test the software/hardware limitations
+# of rapidly changing monitor gamma
+# ...perharps there is a more efficient method of adding hue to monitors
+# 
+# author: Noah Murad
+# date: July 26, 2016
+# warning: great for parties and colour enthusiasts
+
+screens=`xrandr | grep " connected " | awk '{print $1}'`
+
+slp=0.5
+if [ $# -gt 0 ]
+then
+    slp=$1
+fi
+
+function clean_up {
+    for screen in $screens
+    do
+        xrandr --output $screen --gamma 1:1:1 --brightness 1;
+    done
+    exit
+}
+
+trap 'clean_up' INT
+
+while true
+do
+    for screen in $screens
+    do 
+        MULTIPLIER=2
+        r=`echo "scale=5; $RANDOM*$MULTIPLIER/32767" | bc`
+        g=`echo "scale=5; $RANDOM*$MULTIPLIER/32767" | bc`
+        b=`echo "scale=5; $RANDOM*$MULTIPLIER/32767" | bc`
+
+        xrandr --output $screen --gamma $r:$g:$b --brightness 1.2
+        sleep $slp 
+    done
+done

@@ -1,0 +1,24 @@
+#/bin/sh
+
+sec=0
+min=0
+hour=0
+
+while [ $sec -gt -1 ]
+do 
+	printf "%.2d:%.2d:%.2d" $hour $min $sec
+	sleep 1
+	sec=`expr $sec + 1`
+	if [ $sec == 60 ] 
+	then
+		sec=0
+		min=`expr $min + 1`
+	fi
+	if [ $min == 60 ]
+	then
+		min=0
+		hour=`expr $hour + 1`
+	fi
+	echo -ne "\033[2K"
+	echo -ne '\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b'
+done

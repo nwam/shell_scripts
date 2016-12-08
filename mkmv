@@ -1,0 +1,11 @@
+#/bin/sh
+
+array=( "$@" )
+unset "array[${#array[@]}-1]"
+destination="${!#}"
+
+mkdir -p "$destination"
+for i in "${array[@]}"; do
+    mv "$i" "$destination"
+done
+

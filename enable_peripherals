@@ -1,0 +1,13 @@
+#/bin/sh
+
+# the opposite of disable_peripherals
+
+keyboard=`xinput --list | grep 'AT Translated Set 2 keyboard' | cut -d "=" -f 2 | awk '{print $1;}'`
+power=`xinput --list | grep 'Power Button' | cut -d "=" -f 2 | awk '{print $1;}'`
+sleep=`xinput --list | grep 'Sleep Button' | cut -d "=" -f 2 | awk '{print $1;}'`
+touchpad=`xinput --list | grep 'ETPS/2 Elantech Touchpad' | cut -d "=" -f 2 | awk '{print $1;}'`
+
+xinput set-int-prop $keyboard "Device Enabled" 8 1
+xinput set-int-prop $touchpad "Device Enabled" 8 1
+xinput set-int-prop $power "Device Enabled" 8 1
+xinput set-int-prop $sleep "Device Enabled" 8 1
